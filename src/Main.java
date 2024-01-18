@@ -11,10 +11,15 @@ public class Main extends JFrame implements DefaultInfo {
 	private JLabel totalMemoryLabel;
 	private JLabel freeMemoryLabel;
 	private JLabel usedMemoryLabel;
+	private JLabel positionLabel;
+
+
 
 
 	private Color originalColor;
 
+
+	Painting paintingPanel;
 
 	int dpi;
 	Dimension screenSize;
@@ -54,13 +59,17 @@ public class Main extends JFrame implements DefaultInfo {
 	public Main() {
 
 
+		paintingPanel = new Painting();
 
-		setTitle(PROGRAM_NAME);
+
+
+		setTitle(PROGRAM_NAME + " " + VERSION);
 		setSize(640,480);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		originalColor = getContentPane().getBackground();
+		getContentPane().add(paintingPanel, BorderLayout.CENTER);
 
 		setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
@@ -69,17 +78,20 @@ public class Main extends JFrame implements DefaultInfo {
 		totalMemoryLabel = new JLabel("전체 메모리: ");
 		freeMemoryLabel = new JLabel("가용 메모리: ");
 		usedMemoryLabel = new JLabel("현재 할당된 메모리: ");
-
+		positionLabel = new JLabel("x : " + paintingPanel.getPrevX() + ", y : " + paintingPanel.getPrevY());
 
 		add(totalMemoryLabel);
 		add(freeMemoryLabel);
 		add(usedMemoryLabel);
+		add(positionLabel);
 
-
-		Timer timer = new Timer(1000, new ActionListener() {
+		Timer timer = new Timer(10, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				updateMemoryInfo();
+
+				positionLabel.setText("x : " + paintingPanel.getPrevX() + ", y : " + paintingPanel.getPrevY());
+
 			}
 		});
 		timer.start();
